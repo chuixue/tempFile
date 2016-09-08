@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <title>文件列表 - 高级文件传输系统</title>
+</head>
+<style type="text/css">
+
+    .manage{ margin-right:15px; font-size:14px;color:#C00;float:right}
+    .div1{background-color:#ccc;border:#333 double 1px; border-left: 0px;border-right: 0px;padding-top:10px;margin-top:10px;width:100%;min-height:25px}
+    .box1, .box2, .box3 {
+        min-height: 30px;
+    }
+    .box1 {
+        background: #50A6D7;
+    }
+    .box2 {
+        background: #34B72E;
+    }
+    .box3 {
+        background: #7948BF;
+    }
+    .footer {
+        padding: 20px;
+        border-top: 1px solid #ddd;
+        margin-top: 100px;
+    }
+</style>
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/public.js"></script>
+<script src="js/paging.js"></script>
+<script src="js/ejs.js"></script>
+
+<body background="images/sc2.png">
+    <!--
+    <div class="div1">
+        <div><label style="float:left;margin-left:55px;color:#063; font:楷体">高级文件系统</label></div>
+        <div class="manage"><a href="upfile.php">上传</a></div>
+    </div>
+    -->
+    <div class="row">
+        <div class="col-xs-4 box1">1</div>
+        <div class="col-xs-4 box2">2</div>
+        <div class="col-xs-4 box3">3</div>
+    </div>
+
+    <table class="table">
+
+
+
+    </table>
+
+    <ul class="pagination" id="pagination">
+        <li class="previous"><a href="#">首页</a></li>
+        <li class="previous disabled"><a href="#">上一页</a></li>
+        <li><a href="#">&laquo;</a></li>
+        <li id="pageGo"><a href="#">&raquo;</a></li>
+        <li class="next"><a href="#">下一页</a></li>
+        <li class="next"><a href="#">尾页</a></li>
+    </ul>
+
+    <script id="liHtml" type="text/template">
+        <li class="<%= cls %>" id="<%= id %>"><a href="#"><%= target %></a></li>
+    </script>
+
+
+    <script language="JavaScript">
+        $(function() {
+            var __page = { itemCount:0, pageCount:0, pageCurrent:1, pageSize:2, pageShow:5 };
+
+            loadPages(function(dt){
+                pageControl(dt);
+
+            });
+            /*
+            <li class="disabled"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+             active
+            */
+            function pageControl(dt){
+                __page.itemCount = dt.length;
+                __page.pageCount = Math.ceil(__page.itemCount / __page.pageSize);
+                var tm = $('#liHtml').html();
+                var lis = range(0, __page.pageCount).map(function(d){
+                    return ejs.render(tm, {cls:d==0 ? 'active' : '', id:'page_'+(d+1), target:d+1 });
+                });
+                $('#pageGo').before(lis);
+                //cout(__page.itemCount );
+                //alert(__page.pageCount);
+                $('#pagination>li').each(function(){
+                    cout(this);
+                });
+            }
+        })
+    </script>
+
+</body>
+</html>
